@@ -1,0 +1,212 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct node
+{
+    struct node *prev;
+    struct node *next;
+    int data;
+};
+struct node *head = NULL;
+struct node *tail = NULL;
+
+int data;
+void display_in_reverse()
+{
+
+    struct node *temp = tail;
+    while (temp != NULL)
+    {
+        printf("%d ", temp->data);
+        temp = temp->prev;
+    }
+}
+void create()
+{
+    int ch = 1;
+    while (ch == 1)
+    {
+        struct node *newnode = (struct node *)malloc(sizeof(struct node));
+        printf("enter data:");
+        scanf("%d", &data);
+        if (head == NULL)
+        {
+            newnode->data = data;
+            newnode->prev = NULL;
+            newnode->next = NULL;
+            head = newnode;
+            tail = newnode;
+        }
+        else
+        {
+            newnode->data = data;
+            newnode->prev = tail;
+            tail->next = newnode;
+            newnode->next = NULL;
+            tail = newnode;
+        }
+        printf("do you want to insert more:('0'/'1')");
+        scanf("%d", &ch);
+    }
+}
+void insert_at_begin()
+{
+
+    struct node *newnode = (struct node *)malloc(sizeof(struct node));
+    printf("enter data:");
+    scanf("%d", &data);
+    newnode->data = data;
+    newnode->prev = NULL;
+    newnode->next = head;
+    head->prev = newnode;
+    head = newnode;
+}
+
+void insert_at_end()
+{
+    struct node *newnode = (struct node *)malloc(sizeof(struct node));
+    printf("enter data:");
+    scanf("%d", &data);
+    newnode->data = data;
+    tail->next = newnode;
+    newnode->prev = tail;
+    newnode->next = NULL;
+    tail = newnode;
+}
+
+void insert_at_any_position()
+{
+    int pos;
+    struct node *newnode = (struct node *)malloc(sizeof(struct node));
+    struct node *temp = head;
+    printf("enter data:");
+    scanf("%d", &data);
+    printf("enter position");
+    scanf("%d", &pos);
+    int i = 1;
+    while (i <= pos - 2)
+    {
+
+        temp = temp->next;
+        i++;
+    }
+
+    newnode->data = data;
+    newnode->prev = temp;
+    newnode->next = temp->next;
+    temp->next->prev = newnode;
+    temp->next = newnode;
+}
+
+void delete_first_node()
+{
+
+    head = head->next;
+    head->prev = NULL;
+}
+void delete_last_node()
+{
+
+    struct node *temp = head;
+    while (temp->next != tail)
+    {
+        temp = temp->next;
+    }
+
+    temp->next = NULL;
+    tail = temp;
+}
+
+void delete_any_node()
+{
+    int pos;
+    printf("enter position");
+    scanf("%d", &pos);
+    struct node *temp = head;
+
+    int i = 1;
+    while (i <= pos - 2)
+    {
+
+        temp = temp->next;
+        i++;
+    }
+    temp->next = temp->next->next;
+    temp->next->prev = temp;
+}
+void display()
+{
+    struct node *temp = head;
+    while (temp != NULL)
+    {
+        printf("%d ", temp->data);
+        temp = temp->next;
+    }
+}
+void size()
+{
+    struct node *temp = head;
+    int size = 0;
+    while (temp != NULL)
+    {
+        size++;
+        temp = temp->next;
+    }
+
+    printf("size=%d\n", size);
+}
+int main()
+{
+    int ch = 1, option;
+    while (ch == 1)
+    {
+
+        printf("1.create\t2.insert_at_begin\t3.insert_at_end\t4.insert_at_any_position\t5.delete_first_node\t6.delete_last_node\t7.delete_any_node\t8.display\t9.size\t10.display_in_reverse\n");
+        scanf("%d", &option);
+        switch (option)
+        {
+
+        case 1:
+            create();
+            break;
+
+        case 2:
+            insert_at_begin();
+            break;
+
+        case 3:
+            insert_at_end();
+            break;
+
+        case 4:
+            insert_at_any_position();
+            break;
+
+        case 5:
+            delete_first_node();
+            break;
+
+        case 6:
+            delete_last_node();
+            break;
+
+        case 7:
+            delete_any_node();
+            break;
+
+        case 8:
+            display();
+            printf("\n");
+            break;
+
+        case 9:
+            size();
+            break;
+
+        case 10:
+            display_in_reverse();
+            break;
+        }
+        printf("do you want to continue:('0'/'1')");
+        scanf("%d", &ch);
+    }
+}
